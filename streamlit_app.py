@@ -20,21 +20,24 @@ else:
             # Conversión y cálculo según la nueva especificación
             size_cm = size_in * 2.54            # pulgadas -> centímetros
             mitad = size_cm / 2.0              # dividir entre 2
-            cuadrado = mitad ** 2              # elevar al cuadrado
+            dividido = mitad / 100.0           # dividir la mitad entre 100
+            cuadrado = dividido ** 2           # elevar al cuadrado
             gramos = cuadrado * 1000.0        # multiplicar por 1000
 
             st.markdown("**Resultados:**")
             st.write(f"Tamaño ingresado: {size_in:.4g} in")
             st.write(f"Equivalente en cm: {size_cm:.2f} cm")
             st.write(f"Mitad (cm): {mitad:.2f} cm")
-            st.write(f"(Mitad)²: {cuadrado:.2f} cm²")
-            st.write(f"Resina necesaria: {gramos:.2f} g")
+            st.write(f"Mitad / 100: {dividido:.4f} cm")
+            st.write(f"(Mitad/100)²: {cuadrado:.6f} cm²")
+            st.write(f"Resina necesaria: {gramos:.6f} g")
 
             with st.expander("Ver fórmula utilizada"):
                 st.write("Pasos:")
                 st.latex(r"\text{cm} = in \times 2.54")
                 st.latex(r"\text{mitad} = \frac{\text{cm}}{2}")
-                st.latex(r"\text{resultado} = (\text{mitad})^{2} \times 1000")
+                st.latex(r"\text{dividido} = \frac{\text{mitad}}{100}")
+                st.latex(r"\text{resultado} = (\text{dividido})^{2} \times 1000")
     except ValueError:
         st.error("Valor no válido — introduce un número en pulgadas.")
 

@@ -28,6 +28,7 @@
       <div id="sizein"></div>
       <div id="sizecm"></div>
       <div id="mitad"></div>
+      <div id="dividido"></div>
       <div id="cuadrado"></div>
       <div id="grams" style="margin-top:8px;font-weight:700"></div>
       <div class="small" style="margin-top:8px">Cálculo: pulgadas → cm (×2.54), dividir entre 2, elevar al cuadrado y multiplicar por 1,000 → gramos.</div>
@@ -58,14 +59,16 @@
       }
 
       const size_cm = size * 2.54;       // pulgadas → centímetros
-      const mitad = size_cm / 2.0;       // dividir entre 2
-      const cuadrado = mitad * mitad;    // elevar al cuadrado
-      const gramos = cuadrado * 1000.0;  // multiplicar por 1000
+      const mitad = size_cm / 2.0;           // dividir entre 2
+      const dividido = mitad / 100.0;        // dividir la mitad entre 100
+      const cuadrado = dividido * dividido;  // elevar al cuadrado
+      const gramos = cuadrado * 1000.0;      // multiplicar por 1000
 
       sizeInEl.textContent = `Tamaño ingresado: ${size.toFixed(2)} in`;
       sizeCmEl.textContent = `Equivalente: ${size_cm.toFixed(2)} cm`;
       mitadEl.textContent = `Mitad (cm): ${mitad.toFixed(2)} cm`;
-      cuadradoEl.textContent = `(Mitad)²: ${cuadrado.toFixed(2)} cm²`;
+      document.getElementById('dividido').textContent = `Mitad / 100: ${dividido.toFixed(4)} cm`;
+      cuadradoEl.textContent = `(Mitad/100)²: ${cuadrado.toFixed(6)} cm²`;
       gramsEl.textContent = `Resina necesaria: ${gramos.toFixed(2)} g`;
       out.hidden = false;
     }
