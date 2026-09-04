@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Calculadora de Resina - Tope de Mesa</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Arial;margin:24px;background:#f7f7f8;color:#111}
+    .card{max-width:520px;margin:0 auto;background:#fff;padding:20px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input[type=number]{width:100%;padding:10px;border:1px solid #ddd;border-radius:6px;font-size:16px}
+    button{margin-top:12px;padding:10px 14px;border:0;background:#0066cc;color:#fff;border-radius:6px;font-weight:600;cursor:pointer}
+    .result{margin-top:16px;padding:12px;background:#f0f8ff;border-radius:6px}
+    .small{font-size:13px;color:#555}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculadora de resina</h1>
+    <p class="small">Introduce el tamaño de la mesa en pulgadas (diámetro). El resultado será en gramos.</p>
+
+    <label for="size">Tamaño (pulgadas)</label>
+    <input id="size" type="number" step="0.1" min="0" placeholder="Ej: 24" />
+
+    <button id="calc">Calcular</button>
+
+    <div id="out" class="result" aria-live="polite" hidden>
+      <div id="area"></div>
+      <div id="grams" style="margin-top:8px;font-weight:700"></div>
+      <div class="small" style="margin-top:8px">Cálculo utilizado: A = π × (radio²). Radio = mitad del tamaño. Resultado × 1,000 → gramos.</div>
+    </div>
+  </div>
+
+  <script>
+    const input = document.getElementById('size');
+    const btn = document.getElementById('calc');
+    const out = document.getElementById('out');
+    const areaEl = document.getElementById('area');
+    const gramsEl = document.getElementById('grams');
+
+    function calcular(){
+      const size = parseFloat(input.value);
+      if (!isFinite(size) || size <= 0){
+        out.hidden = true;
+        return;
+      }
+      const radio = size / 2;
+      const area = Math.PI * radio * radio; // A = π * r^2
+      const gramos = area * 1000; // multiplicar por 1,000
+
+      areaEl.textContent = `Área: ${area.toFixed(2)} in²`;
+      gramsEl.textContent = `Resina necesaria: ${gramos.toFixed(2)} g`;
+      out.hidden = false;
+    }
+
+    btn.addEventListener('click', calcular);
+    input.addEventListener('keydown', (e)=>{ if (e.key === 'Enter') calcular(); });
+  </script>
+</body>
+</html>
