@@ -26,10 +26,10 @@
 
     <div id="out" class="result" aria-live="polite" hidden>
       <div id="sizein"></div>
-      <div id="sizecm"></div>
       <div id="mitad"></div>
       <div id="dividido"></div>
       <div id="cuadrado"></div>
+      <div id="porpi"></div>
       <div id="grams" style="margin-top:8px;font-weight:700"></div>
       <div class="small" style="margin-top:8px">Cálculo: pulgadas → cm (×2.54), dividir entre 2, elevar al cuadrado y multiplicar por 1,000 → gramos.</div>
     </div>
@@ -40,9 +40,10 @@
     const btn = document.getElementById('calc');
     const out = document.getElementById('out');
     const sizeInEl = document.getElementById('sizein');
-    const sizeCmEl = document.getElementById('sizecm');
     const mitadEl = document.getElementById('mitad');
+    const divididoEl = document.getElementById('dividido');
     const cuadradoEl = document.getElementById('cuadrado');
+    const porPiEl = document.getElementById('porpi');
     const gramsEl = document.getElementById('grams');
 
     function calcular(){
@@ -58,18 +59,20 @@
         return;
       }
 
-      const size_cm = size * 2.54;       // pulgadas → centímetros
-      const mitad = size_cm / 2.0;           // dividir entre 2
-      const dividido = mitad / 100.0;        // dividir la mitad entre 100
-      const cuadrado = dividido * dividido;  // elevar al cuadrado
-      const gramos = cuadrado * 1000.0;      // multiplicar por 1000
+      // Secuencia solicitada: dividir entre 2, dividir entre 100, elevar al cuadrado,
+      // multiplicar por 3.1416 y luego por 1000
+      const mitad = size / 2.0;
+      const dividido = mitad / 100.0;
+      const cuadrado = dividido * dividido;
+      const porPi = cuadrado * 3.1416;
+      const gramos = porPi * 1000.0;
 
       sizeInEl.textContent = `Tamaño ingresado: ${size.toFixed(2)} in`;
-      sizeCmEl.textContent = `Equivalente: ${size_cm.toFixed(2)} cm`;
-      mitadEl.textContent = `Mitad (cm): ${mitad.toFixed(2)} cm`;
-      document.getElementById('dividido').textContent = `Mitad / 100: ${dividido.toFixed(4)} cm`;
-      cuadradoEl.textContent = `(Mitad/100)²: ${cuadrado.toFixed(6)} cm²`;
-      gramsEl.textContent = `Resina necesaria: ${gramos.toFixed(2)} g`;
+      mitadEl.textContent = `Mitad: ${mitad.toFixed(6)}`;
+      divididoEl.textContent = `Mitad / 100: ${dividido.toFixed(6)}`;
+      cuadradoEl.textContent = `(Mitad/100)²: ${cuadrado.toFixed(9)}`;
+      porPiEl.textContent = `× 3.1416: ${porPi.toFixed(9)}`;
+      gramsEl.textContent = `Resina necesaria: ${gramos.toFixed(6)} g`;
       out.hidden = false;
     }
 
