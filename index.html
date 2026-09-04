@@ -17,17 +17,20 @@
 <body>
   <div class="card">
     <h1>Calculadora de resina</h1>
-    <p class="small">Introduce el tamaño de la mesa en pulgadas (diámetro). El resultado será en gramos.</p>
+    <p class="small">Introduce el tamaño del tope en pulgadas (diámetro). Escribe el valor en el campo vacío y pulsa calcular.</p>
 
     <label for="size">Tamaño (pulgadas)</label>
-    <input id="size" type="number" step="0.1" min="0" placeholder="Ej: 24" />
+    <input id="size" type="text" inputmode="decimal" placeholder="Ej: 24" />
 
     <button id="calc">Calcular</button>
 
     <div id="out" class="result" aria-live="polite" hidden>
-      <div id="area"></div>
+      <div id="sizein"></div>
+      <div id="sizecm"></div>
+      <div id="mitad"></div>
+      <div id="cuadrado"></div>
       <div id="grams" style="margin-top:8px;font-weight:700"></div>
-      <div class="small" style="margin-top:8px">Cálculo utilizado: A = π × (radio²). Radio = mitad del tamaño. Resultado × 1,000 → gramos.</div>
+      <div class="small" style="margin-top:8px">Cálculo: pulgadas → cm (×2.54), dividir entre 2, elevar al cuadrado y multiplicar por 1,000 → gramos.</div>
     </div>
   </div>
 
@@ -35,20 +38,34 @@
     const input = document.getElementById('size');
     const btn = document.getElementById('calc');
     const out = document.getElementById('out');
-    const areaEl = document.getElementById('area');
+    const sizeInEl = document.getElementById('sizein');
+    const sizeCmEl = document.getElementById('sizecm');
+    const mitadEl = document.getElementById('mitad');
+    const cuadradoEl = document.getElementById('cuadrado');
     const gramsEl = document.getElementById('grams');
 
     function calcular(){
-      const size = parseFloat(input.value);
-      if (!isFinite(size) || size <= 0){
+      const raw = input.value.trim();
+      if (raw === ''){
         out.hidden = true;
         return;
       }
-      const radio = size / 2;
-      const area = Math.PI * radio * radio; // A = π * r^2
-      const gramos = area * 1000; // multiplicar por 1,000
+      const size = Number(raw.replace(',', '.'));
+      if (!isFinite(size) || size <= 0){
+        alert('Introduce un número válido en pulgadas mayor que 0.');
+        out.hidden = true;
+        return;
+      }
 
-      areaEl.textContent = `Área: ${area.toFixed(2)} in²`;
+      const size_cm = size * 2.54;       // pulgadas → centímetros
+      const mitad = size_cm / 2.0;       // dividir entre 2
+      const cuadrado = mitad * mitad;    // elevar al cuadrado
+      const gramos = cuadrado * 1000.0;  // multiplicar por 1000
+
+      sizeInEl.textContent = `Tamaño ingresado: ${size.toFixed(2)} in`;
+      sizeCmEl.textContent = `Equivalente: ${size_cm.toFixed(2)} cm`;
+      mitadEl.textContent = `Mitad (cm): ${mitad.toFixed(2)} cm`;
+      cuadradoEl.textContent = `(Mitad)²: ${cuadrado.toFixed(2)} cm²`;
       gramsEl.textContent = `Resina necesaria: ${gramos.toFixed(2)} g`;
       out.hidden = false;
     }
