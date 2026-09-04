@@ -17,17 +17,23 @@ else:
         if size_in <= 0:
             st.error("Introduce un número mayor que 0.")
         else:
-            # Secuencia: dividir entre 2, dividir entre 100, elevar al cuadrado,
-            # multiplicar por 3.1416 y luego por 1000
-            mitad = size_in / 2.0
+            # Primero convertir pulgadas -> centímetros, luego aplicar la secuencia:
+            # 1) dividir entre 2 (en cm)
+            # 2) dividir el resultado entre 100
+            # 3) multiplicar por sí mismo (elevar al cuadrado)
+            # 4) multiplicar por 3.1416
+            # 5) multiplicar por 1000
+            size_cm = size_in * 2.54
+            mitad = size_cm / 2.0
             dividido = mitad / 100.0
             cuadrado = dividido * dividido
             por_pi = cuadrado * 3.1416
             gramos = por_pi * 1000.0
 
             st.markdown("**Resultados:**")
-            st.write(f"Tamaño ingresado: {size_in:.6f}")
-            st.write(f"Mitad: {mitad:.6f}")
+            st.write(f"Tamaño ingresado: {size_in:.6f} in")
+            st.write(f"Equivalente: {size_cm:.4f} cm")
+            st.write(f"Mitad (cm): {mitad:.6f}")
             st.write(f"Mitad / 100: {dividido:.6f}")
             st.write(f"(Mitad/100)²: {cuadrado:.9f}")
             st.write(f"× 3.1416: {por_pi:.9f}")
@@ -35,7 +41,8 @@ else:
 
             with st.expander("Ver fórmula utilizada"):
                 st.write("Pasos ejecutados:")
-                st.latex(r"\text{mitad} = \frac{\text{tamaño}}{2}")
+                st.latex(r"\text{cm} = in \times 2.54")
+                st.latex(r"\text{mitad} = \frac{\text{cm}}{2}")
                 st.latex(r"\text{dividido} = \frac{\text{mitad}}{100}")
                 st.latex(r"\text{resultado} = (\text{dividido})^{2} \times 3.1416 \times 1000")
     except ValueError:

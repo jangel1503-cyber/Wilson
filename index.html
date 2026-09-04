@@ -59,16 +59,24 @@
         return;
       }
 
-      // Secuencia solicitada: dividir entre 2, dividir entre 100, elevar al cuadrado,
+      // Primero convertir pulgadas -> centímetros, luego aplicar la secuencia:
+      // dividir entre 2 (en cm), dividir entre 100, elevar al cuadrado,
       // multiplicar por 3.1416 y luego por 1000
-      const mitad = size / 2.0;
+      const size_cm = size * 2.54;
+      const mitad = size_cm / 2.0;
       const dividido = mitad / 100.0;
       const cuadrado = dividido * dividido;
       const porPi = cuadrado * 3.1416;
       const gramos = porPi * 1000.0;
 
       sizeInEl.textContent = `Tamaño ingresado: ${size.toFixed(2)} in`;
-      mitadEl.textContent = `Mitad: ${mitad.toFixed(6)}`;
+      // mostrar equivalente en cm
+      document.getElementById('sizecm')?.remove();
+      const cmNode = document.createElement('div');
+      cmNode.id = 'sizecm';
+      cmNode.textContent = `Equivalente: ${size_cm.toFixed(4)} cm`;
+      out.insertBefore(cmNode, mitadEl);
+      mitadEl.textContent = `Mitad (cm): ${mitad.toFixed(6)}`;
       divididoEl.textContent = `Mitad / 100: ${dividido.toFixed(6)}`;
       cuadradoEl.textContent = `(Mitad/100)²: ${cuadrado.toFixed(9)}`;
       porPiEl.textContent = `× 3.1416: ${porPi.toFixed(9)}`;
